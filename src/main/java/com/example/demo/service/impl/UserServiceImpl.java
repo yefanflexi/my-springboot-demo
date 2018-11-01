@@ -5,6 +5,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +16,8 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserRepository userRepository;
+    @Resource
+    private RedisTemplate redisTemplate;
     @Override
     public User findById(String id) {
         return userRepository.findOne(id);
