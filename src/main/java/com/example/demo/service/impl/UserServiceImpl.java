@@ -18,9 +18,24 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Resource
     private RedisTemplate redisTemplate;
+    private static final String ALL_USER = "ALL_USER_LIST";
     @Override
     public User findById(String id) {
-        return userRepository.findOne(id);
+        List<User> userList = redisTemplate.opsForList().range(ALL_USER,0,-1);
+        if (userList != null && userList.size() >0){
+            for (User user:userList){
+                if (user.getId().equals(id)){
+                    return user;
+                }
+            }
+        }
+        //查询数据库中数据
+        User user = userRepository.findOne(id);
+        if (user != null){
+            //查询到新的数据 重新插入redis缓存中
+            redisTemplate.opsForList().leftPush(ALL_USER,user);
+        }
+        return user;
     }
 
     @Override

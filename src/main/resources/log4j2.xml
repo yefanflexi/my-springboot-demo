@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration status="WARN">
+    <properties>
+        <!-- 文件输出格式 -->
+        <property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level [%thread] %c [%L] -| %msg%n</property>
+    </properties>
+
+    <appenders>
+        <Console name="CONSOLE" target="system_out">
+            <PatternLayout pattern="${PATTERN}" />
+        </Console>
+        <RollingFile name="RollingFileInfo" fileName="D:/my-springboot-dome.log"
+                     filePattern="D:/$${data:yyyy-MM}/my-springboot-dome-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="INFO"/>
+            </Filters>
+            <PatternLayout pattern="${PATTERN}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <root level="all">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+        </root>
+    </loggers>
+</configuration>
+

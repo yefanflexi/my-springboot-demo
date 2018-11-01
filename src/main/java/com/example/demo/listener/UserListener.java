@@ -2,6 +2,8 @@ package com.example.demo.listener;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
@@ -16,6 +18,8 @@ import java.util.List;
  */
 @WebListener
 public class UserListener implements ServletContextListener {
+
+    Logger logger = LogManager.getLogger(this.getClass());
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -35,13 +39,13 @@ public class UserListener implements ServletContextListener {
             在实际项目中需注销
          */
         List<User> queryUserList = redisTemplate.opsForList().range(ALL_USER,0,-1);
-        System.out.println(queryUserList.size()+"renshu");
-        System.out.println("ServletContext init");
+        logger.info(queryUserList.size()+"renshu");
+        logger.info("ServletContext init");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        System.out.println("ServletContext destory");
+        logger.info("ServletContext destory");
 
     }
 }
