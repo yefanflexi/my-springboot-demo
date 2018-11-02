@@ -3,6 +3,9 @@ package com.example.demo.service.impl;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,6 +17,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    Logger logger = LogManager.getLogger(this.getClass());
     @Resource
     private UserRepository userRepository;
     @Resource
@@ -51,6 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String id) {
         userRepository.delete(id);
+        logger.info("userId:"+id+"用户被删除");
     }
 
     @Override

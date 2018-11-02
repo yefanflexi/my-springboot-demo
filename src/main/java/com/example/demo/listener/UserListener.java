@@ -2,8 +2,8 @@ package com.example.demo.listener;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
