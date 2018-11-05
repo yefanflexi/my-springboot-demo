@@ -24,9 +24,9 @@
     </appenders>
 
     <loggers>
-        <root level="all">
-            <appender-ref ref="Console"/>
-            <appender-ref ref="RollingFileInfo"/>
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <!--<appender-ref ref="RollingFileInfo"/>-->
         </root>
     </loggers>
 </configuration>
