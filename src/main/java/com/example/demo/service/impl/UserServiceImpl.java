@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dao.UserDao;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -18,6 +19,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     Logger logger = LogManager.getLogger(this.getClass());
+
+    @Resource
+    private UserDao userDao;
     @Resource
     private UserRepository userRepository;
     @Resource
@@ -41,7 +45,6 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
-
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
@@ -71,5 +74,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findByIdIn(Collection<String> ids) {
         return userRepository.findByIdIn(ids);
+    }
+
+    @Override
+    public User findByUsernameAndPassword(String username, String password) {
+        return userDao.findByUsernameAndPassword(username, password);
     }
 }

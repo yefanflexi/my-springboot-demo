@@ -20,4 +20,6 @@ public interface UserService {
 
     List<User> findByName(String name);
     List<User> findByIdIn(Collection<String> ids);
+    //mybatis
+    User findByUsernameAndPassword(String username,String password);
 }

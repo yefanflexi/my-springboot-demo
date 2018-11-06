@@ -106,6 +106,11 @@ public class DemoApplicationTests {
 
     }
     @Test
+    public void testMybatis(){
+        User user = userService.findByUsernameAndPassword("张三","123");
+        LOGGER.info(user.getId()+user.getUsername());
+    }
+    @Test
     public void testAyMood(){
         AyMood ayMood = new AyMood();
         ayMood.setId("1");
