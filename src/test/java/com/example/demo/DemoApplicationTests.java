@@ -1,7 +1,13 @@
 package com.example.demo;
 
+import com.example.demo.activemq.AyMoodProducer;
+import com.example.demo.model.AyMood;
 import com.example.demo.model.User;
+import com.example.demo.service.AyMoodService;
 import com.example.demo.service.UserService;
+import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,14 +21,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import javax.jms.Destination;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DemoApplicationTests {
+
+    private static final Logger LOGGER = LogManager.getLogger(DemoApplicationTests.class);
     @Resource
     private JdbcTemplate jdbcTemplate;
     @Resource
@@ -31,6 +41,8 @@ public class DemoApplicationTests {
     private RedisTemplate redisTemplate;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private AyMoodService ayMoodService;
 
     @Test
     public void postgresqlTest() {
@@ -92,5 +104,36 @@ public class DemoApplicationTests {
         name = (String) redisTemplate.opsForValue().get("name");
         System.out.println(name);
 
+    }
+    @Test
+    public void testAyMood(){
+        AyMood ayMood = new AyMood();
+        ayMood.setId("1");
+        ayMood.setUserId("1");
+        ayMood.setPraiseNum(0);
+        ayMood.setContent("first content");
+        ayMood.setPublishTime(new Date());
+        ayMoodService.save(ayMood);
+    }
+
+    @Resource
+    private AyMoodProducer ayMoodProducer;
+    @Test
+    public void testActiveMQ(){
+
+        Destination destination =  new ActiveMQQueue("ay.queue");
+        ayMoodProducer.sendMessage(destination,"hello activemq");
+    }
+
+    @Test
+    public void testActiveMQAsynSave(){
+        AyMood ayMood = new AyMood();
+        ayMood.setId("2");
+        ayMood.setUserId("2");
+        ayMood.setPraiseNum(0);
+        ayMood.setContent("first content");
+        ayMood.setPublishTime(new Date());
+        String msg = ayMoodService.asynSave(ayMood);
+        LOGGER.info("asyn发表说说 :"+msg);
     }
 }

@@ -36,7 +36,7 @@ public class SendMailQuartz {
         if (userList.size()<=0 || userList == null) {
             return ;
         }
-        sendJunkMailService.sendJunkMail(userList);
+//        sendJunkMailService.sendJunkMail(userList);
         LOGGER.info("定时器 runing ! ! !");
     }
 }
