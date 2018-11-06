@@ -27,7 +27,7 @@ public class AyMoodConsumer {
 
     @JmsListener(destination = "ay.queue.asyn.save")
     public void receiveQueue(AyMood ayMood){
-        ayMoodService.save(ayMood);
+        //ayMoodService.save(ayMood);
         //LOGGER.info("发表ayMood"+ayMood.toString()+"------------success");
     }
 }

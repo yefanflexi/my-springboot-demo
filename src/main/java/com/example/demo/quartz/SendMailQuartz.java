@@ -21,6 +21,7 @@ import java.util.List;
 @Configurable
 @EnableScheduling
 public class SendMailQuartz {
+
     //日志对象
     private static final Logger LOGGER = LogManager.getLogger(SendMailQuartz.class);
 
@@ -29,14 +30,14 @@ public class SendMailQuartz {
     @Resource
     private UserService userService;
 
-    //每5秒执行一次
-    @Scheduled(cron="0/5 * *  * * * ")
-    public void reportCurrentByCron(){
-        List<User> userList = userService.findAll();
-        if (userList.size()<=0 || userList == null) {
-            return ;
-        }
-//        sendJunkMailService.sendJunkMail(userList);
-        LOGGER.info("定时器 runing ! ! !");
-    }
+//    //每5秒执行一次
+//    @Scheduled(cron="0/5 * *  * * * ")
+//    public void reportCurrentByCron(){
+//        List<User> userList = userService.findAll();
+//        if (userList.size()<=0 || userList == null) {
+//            return ;
+//        }
+////        sendJunkMailService.sendJunkMail(userList);
+//        LOGGER.info("定时器 runing ! ! !");
+//    }
 }
