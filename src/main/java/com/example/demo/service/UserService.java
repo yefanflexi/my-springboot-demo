@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * user 服务层接口
@@ -22,4 +23,5 @@ public interface UserService {
     List<User> findByIdIn(Collection<String> ids);
     //mybatis
     User findByUsernameAndPassword(String username,String password);
+    Future<List<User>> findAsynAll();
 }

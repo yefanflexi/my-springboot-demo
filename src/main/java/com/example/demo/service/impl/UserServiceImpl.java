@@ -10,11 +10,16 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -45,9 +50,41 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
+    @Override
+    @Async
+    public Future<List<User>> findAsynAll() {
+        try {
+            logger.info("开始异步findAll任务");
+            Long start = System.currentTimeMillis();
+            List<User> userList = userRepository.findAll();
+            Long end = System.currentTimeMillis();
+            logger.info("完成耗时："+(end-start)+"毫秒");
+            return new AsyncResult<List<User>>(userList);
+
+        }catch (Exception e){
+            logger.error("method [findAll] error",e);
+            return new AsyncResult<List<User>>(null);
+
+        }
+    }
+
     @Override
     public List<User> findAll() {
-        return userRepository.findAll();
+        try {
+            logger.info("开始findAll任务");
+            Long start = System.currentTimeMillis();
+            List<User> userList = userRepository.findAll();
+            Long end = System.currentTimeMillis();
+            logger.info("完成耗时："+(end-start)+"毫秒");
+            return userList;
+
+        }catch (Exception e){
+            logger.error("method [findAll] error",e);
+            return Collections.EMPTY_LIST;
+
+        }
+       // return userRepository.findAll();
     }
 
     @Override
