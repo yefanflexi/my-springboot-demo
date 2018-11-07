@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.UserDao;
+import com.example.demo.exception.BusinessException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -10,11 +11,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sound.sampled.Line;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -67,6 +71,13 @@ public class UserServiceImpl implements UserService {
             return new AsyncResult<List<User>>(null);
 
         }
+    }
+
+    @Override
+    @Retryable(value = {BusinessException.class},maxAttempts=5,backoff = @Backoff(delay = 5000,multiplier = 2))
+    public User findByUsernameAndPasswordRetry(String username, String password) {
+        logger.info("{findByUsernameAndPasswordRetry} 方法失败重试了");
+        throw new BusinessException();
     }
 
     @Override

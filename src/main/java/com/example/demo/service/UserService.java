@@ -23,5 +23,6 @@ public interface UserService {
     List<User> findByIdIn(Collection<String> ids);
     //mybatis
     User findByUsernameAndPassword(String username,String password);
+    User findByUsernameAndPasswordRetry(String username,String password);
     Future<List<User>> findAsynAll();
 }

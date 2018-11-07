@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.BusinessException;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -21,5 +22,18 @@ public class userController {
         List<User> userList = userService.findAll();
         model.addAttribute("users",userList);
         return "userList";
+    }
+    @RequestMapping("/findAll")
+    public String findAll(Model model){
+        List<User> userList = userService.findAll();
+        model.addAttribute("users",userList);
+        throw new BusinessException("业务异常");
+    }
+
+    @RequestMapping("/findByUsernameAndPasswordRetry")
+    public String findByUsernameAndPasswordRetry(Model model){
+        User user = userService.findByUsernameAndPasswordRetry("张三","123");
+        model.addAttribute("users",user);
+        return "success";
     }
 }
