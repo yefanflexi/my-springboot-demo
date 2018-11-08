@@ -20,6 +20,7 @@ public interface UserService {
     Page<User> findAll(Pageable pageable);
 
     List<User> findByName(String name);
+    User findByUserName(String name);
     List<User> findByIdIn(Collection<String> ids);
     //mybatis
     User findByUsernameAndPassword(String username,String password);

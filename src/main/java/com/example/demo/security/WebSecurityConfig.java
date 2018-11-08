@@ -1,6 +1,8 @@
 package com.example.demo.security;
 
+import com.example.demo.service.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +16,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Bean
+    public CustomUserService CustomUserService(){
+        return new CustomUserService();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -26,9 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         auth
-                .inMemoryAuthentication()
-                .withUser("张三").password("123").roles("ADMIN")
-                .and()
-                .withUser("李四").password("111").roles("USER");
+                .userDetailsService(CustomUserService());
+//                .inMemoryAuthentication()
+//                .withUser("张三").password("123").roles("ADMIN")
+//                .and()
+//                .withUser("李四").password("111").roles("USER");
     }
 }
