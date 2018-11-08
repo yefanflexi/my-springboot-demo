@@ -69,9 +69,9 @@ public class DemoApplicationTests {
         List<User> userList = userService.findAll();
         System.out.println("findAll()========="+userList.size());
         //通过name查询数据
-        List<User> userList1 = userService.findByName("张三");
+        List<User> userList1 = userService.findByName("admin");
         System.out.println("findByName====="+userList1.toString());
-        Assert.isTrue(userList1.get(0).getUsername().equals("张三"),"data error");
+        Assert.isTrue(userList1.get(0).getUsername().equals("admin"),"data error");
         //通过ids查询数据
         List<String> ids =  new ArrayList<String>();
         ids.add("1");
@@ -107,7 +107,7 @@ public class DemoApplicationTests {
     }
     @Test
     public void testMybatis(){
-        User user = userService.findByUsernameAndPassword("张三","123");
+        User user = userService.findByUsernameAndPassword("admin","123");
         LOGGER.info(user.getId()+user.getUsername());
     }
     @Test
